@@ -7,6 +7,8 @@ import morgan from "morgan";
 import userRoutes from "./routes/userRoutes";
 import serviceRoutes from "./routes/serviceRoutes";
 import bookingRoutes from "./routes/bookingRoutes";
+import destinationRoutes from "./routes/destinationRoutes";
+import aircraftRoutes from "./routes/aircraftRoutes";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swagger";
 
@@ -30,6 +32,8 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/destinations", destinationRoutes);
+app.use("/api/aircrafts", aircraftRoutes);
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Centralized error handler

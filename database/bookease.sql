@@ -87,4 +87,31 @@ CREATE TABLE `user`  (
 INSERT INTO `user` VALUES (1, 'admin', 'admin@revou', '$2b$10$hGmSHi41isGKYhb2jOgUYeXYRvbRGChkiPMHa03chcyBPrJAIKYeW', 'admin', '2025-11-04 09:27:28.096');
 INSERT INTO `user` VALUES (2, 'user', 'user@revou', '$2b$10$hGmSHi41isGKYhb2jOgUYeXYRvbRGChkiPMHa03chcyBPrJAIKYeW', 'user', '2025-11-13 15:05:14.787');
 
+-- ----------------------------
+-- Table structure for aircraft
+-- ----------------------------
+DROP TABLE IF EXISTS `aircraft`;
+CREATE TABLE `aircraft`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `Aircraft_name_key`(`name` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for destination
+-- ----------------------------
+DROP TABLE IF EXISTS `destination`;
+CREATE TABLE `destination`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `code` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `image` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `Destination_name_key`(`name` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
 SET FOREIGN_KEY_CHECKS = 1;

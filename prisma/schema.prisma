@@ -36,3 +36,17 @@ model Booking {
   status     String   @default("pending")
   createdAt  DateTime @default(now())
 }
+
+model Destination {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  image     String?
+  createdAt DateTime @default(now())
+}
+
+model Aircraft {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  type      String?
+  createdAt DateTime @default(now())
+}
