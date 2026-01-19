@@ -133,28 +133,24 @@ export const deleteService = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Service not found" });
     }
     
-    // Check if there are any bookings using this service
-    if (service.bookings && service.bookings.length > 0) {
-      return res.status(400).json({ 
-        message: `Cannot delete service. There are ${service.bookings.length} booking(s) using this service. Please delete or update the bookings first.` 
+    // Use transaction to delete all associated bookings first, then the service
+    await prisma.$transaction(async (tx) => {
+      // Delete all bookings associated with this service
+      if (service.bookings && service.bookings.length > 0) {
+        await tx.booking.deleteMany({
+          where: { serviceId: serviceId },
+        });
+      }
+      
+      // Delete the service
+      await tx.service.delete({
+        where: { id: serviceId },
       });
-    }
-    
-    // Delete the service
-    await prisma.service.delete({
-      where: { id: serviceId },
     });
     
     return res.json({ message: "Service deleted successfully" });
   } catch (error: any) {
     console.error("Delete service error:", error);
-    
-    // Handle Prisma foreign key constraint error
-    if (error.code === "P2003") {
-      return res.status(400).json({ 
-        message: "Cannot delete service. There are bookings associated with this service." 
-      });
-    }
     
     if (error.code === "P2025") {
       return res.status(404).json({ message: "Service not found" });

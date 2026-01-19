@@ -105,9 +105,29 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
 export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params as { id: string };
-    await prisma.user.delete({ where: { id: Number(id) } });
+    const userId = Number(id);
+    
+    // Check if user exists and get their role
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, role: true },
+    });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // Prevent deletion of admin users
+    if (user.role === "admin") {
+      return res.status(400).json({ message: "Cannot delete user with admin role" });
+    }
+    
+    await prisma.user.delete({ where: { id: userId } });
     return res.status(204).send();
-  } catch (e) {
+  } catch (e: any) {
+    if (e.code === "P2025") {
+      return res.status(404).json({ message: "User not found" });
+    }
     return res.status(500).json({ message: "Failed to delete user" });
   }
 };
